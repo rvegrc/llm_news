@@ -9,8 +9,30 @@ langchain-deepseek
 openpyxl
 pandas
 langchain_community
-langchain_huggingface
 protobuf
 sentencepiece
 beautifulsoup4==4.12.3
 selenium==4.29.0
+torch --index-url https://download.pytorch.org/whl/cu126
+torchvision --index-url https://download.pytorch.org/whl/cu126
+torchaudio --index-url https://download.pytorch.org/whl/cu126
+langchain-chroma
+langchain
+langchain-openai
+langchain-core
+docx2txt
+pypdf
+python-multipart
+fastapi
+uvicorn
+langchain-ollama
+langchain 
+langchain-huggingface 
+sentence_transformers
+einops 
+langchain_chroma
+datasets
+langchain-graph-retriever
+langchain-graph-retriever[chroma]
+openpyxl
+sentence-transformers

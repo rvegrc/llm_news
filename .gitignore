@@ -1,3 +1,4 @@
 *.env
 *models/
 *data/
+*tmp/
