@@ -12,3 +12,5 @@ langchain_community
 langchain_huggingface
 protobuf
 sentencepiece
+beautifulsoup4==4.12.3
+selenium==4.29.0
