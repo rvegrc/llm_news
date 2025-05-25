@@ -1,0 +1,32 @@
+services:
+  chrome:
+    image: selenium/standalone-chrome:latest
+    container_name: selenium-chrome
+    ports:
+      - "5900:5900"
+      - "4444:4444"
+    privileged: true
+    # resources ram and cpu:
+    shm_size: 2g
+    networks:
+      - mynetwork
+
+  # jupyter:
+  #   build: .
+  #   container_name: jupyter
+  #   command: jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='1234' --NotebookApp.password='1234'
+  #   ports:
+  #     - "8888:8888"
+  #   volumes:
+  #     - ../geo:/app/geo
+  #     - ../tmp:/app/tmp
+  #   env_file:
+  #     - ../.env
+  #   depends_on:
+  #     - chrome
+  #   networks:
+  #     - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
