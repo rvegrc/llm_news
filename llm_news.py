@@ -190,21 +190,26 @@ def get_all_key_moments_ratio(row):
     df_key_moments['text_ratio_mean'] = df_key_moments['key_moment_ratio'].mean()
     df_key_moments['text_ratio_median'] = df_key_moments['key_moment_ratio'].median()
 
-    return df_key_moments
+    return df_key_moments.to_dict(orient='records')
 
 
 web_text_indexes = data_test_web.index.tolist()
 
 if __name__ == "__main__":
+    # create key moments for all web texts
     with Pool(processes=50) as pool:
         results = pd.DataFrame(pool.map(get_all_key_moments, web_text_indexes))
     
     results_dict = results.to_dict(orient="records")
 
     with Pool(processes=50) as pool:
-        all_key_moments_ratio = pd.DataFrame(pool.map(get_all_key_moments_ratio, results_dict))
+        all_key_moments_ratio = pool.map(get_all_key_moments_ratio, results_dict)
    
-    df_output = pd.concat(all_key_moments_ratio, ignore_index=True).reset_index(drop=True)
+    # every record in results_ratio — List[dict] -> transform to DataFrame
+    df_list = [pd.DataFrame(res) for res in all_key_moments_ratio if res]  # пропускаем пустые
+
+    df_output = pd.concat(df_list, ignore_index=True).reset_index(drop=True)
+
     df_output.to_csv("output/web_key_moments_ratio.csv", index=False)
 
     data_test_web['text_id'] = data_test_web.index
