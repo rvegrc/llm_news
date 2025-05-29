@@ -36,5 +36,3 @@ langchain-graph-retriever
 langchain-graph-retriever[chroma]
 openpyxl
 sentence-transformers
-# sql
-psycopg2-binary==2.9.10

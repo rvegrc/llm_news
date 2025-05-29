@@ -199,7 +199,8 @@ web_text_indexes = data_test_web.index.tolist()
 if __name__ == "__main__":
     with Pool(processes=50) as pool:
         results = pd.DataFrame(pool.map(get_all_key_moments, web_text_indexes))
-        results_tmp = results.copy()
+    
+    results_tmp = results
 
     with Pool(processes=50) as pool:
         all_key_moments_ratio = pd.DataFrame(pool.map(get_all_key_moments_ratio,web_text_indexes))
