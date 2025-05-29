@@ -124,11 +124,10 @@ def get_all_key_moments(text_id):
     return {'text_id': text_id, 'result': result}
 
 # add None variable to avoid multiprocessing error, rewrite it later
-results_tmp = None
 
-def get_all_key_moments_ratio(text_id):
-    row = results_tmp[results_tmp['text_id'] == text_id]
-    wkm = row['result'].values[0]
+def get_all_key_moments_ratio(row):
+    text_id = row['text_id']
+    wkm = row['result']
 
     parser = PydanticOutputParser(pydantic_object=OneKeyMomentRatio)
     parser = OutputFixingParser.from_llm(parser=parser, llm=llm)
@@ -184,12 +183,12 @@ def get_all_key_moments_ratio(text_id):
         df_key_moments.append(df_aspects)
 
 
-        df_key_moments = pd.concat(df_key_moments, ignore_index=True).reset_index(drop=True)
+    df_key_moments = pd.concat(df_key_moments, ignore_index=True).reset_index(drop=True)
 
-        df_key_moments['text_id'] = text_id
+    df_key_moments['text_id'] = text_id
 
-        df_key_moments['text_ratio_mean'] = df_key_moments['key_moment_ratio'].mean()
-        df_key_moments['text_ratio_median'] = df_key_moments['key_moment_ratio'].median()
+    df_key_moments['text_ratio_mean'] = df_key_moments['key_moment_ratio'].mean()
+    df_key_moments['text_ratio_median'] = df_key_moments['key_moment_ratio'].median()
 
     return df_key_moments
 
@@ -200,10 +199,10 @@ if __name__ == "__main__":
     with Pool(processes=50) as pool:
         results = pd.DataFrame(pool.map(get_all_key_moments, web_text_indexes))
     
-    results_tmp = results
+    results_dict = results.to_dict(orient="records")
 
     with Pool(processes=50) as pool:
-        all_key_moments_ratio = pd.DataFrame(pool.map(get_all_key_moments_ratio,web_text_indexes))
+        all_key_moments_ratio = pd.DataFrame(pool.map(get_all_key_moments_ratio, results_dict))
    
     df_output = pd.concat(all_key_moments_ratio, ignore_index=True).reset_index(drop=True)
     df_output.to_csv("output/web_key_moments_ratio.csv", index=False)
