@@ -1,1 +1,1 @@
-Parse news from the websites and sav them to text. Find difference between text from web and text from lib. Scoring difference ratio.
+Parse news from the websites and save them to text. Find difference between text from web and text from lib. Scoring difference ratio.

@@ -123,8 +123,11 @@ def get_all_key_moments(text_id):
     
     return {'text_id': text_id, 'result': result}
 
+# add None variable to avoid multiprocessing error, rewrite it later
+results_tmp = None
+
 def get_all_key_moments_ratio(text_id):
-    row = results[results['text_id'] == text_id]
+    row = results_tmp[results_tmp['text_id'] == text_id]
     wkm = row['result'].values[0]
 
     parser = PydanticOutputParser(pydantic_object=OneKeyMomentRatio)
@@ -196,6 +199,7 @@ web_text_indexes = data_test_web.index.tolist()
 if __name__ == "__main__":
     with Pool(processes=50) as pool:
         results = pd.DataFrame(pool.map(get_all_key_moments, web_text_indexes))
+        results_tmp = results.copy()
 
     with Pool(processes=50) as pool:
         all_key_moments_ratio = pd.DataFrame(pool.map(get_all_key_moments_ratio,web_text_indexes))
