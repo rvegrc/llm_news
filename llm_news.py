@@ -90,7 +90,7 @@ llm = ChatDeepSeek(
     max_retries=2,
 )
 
-data_test_web = pd.read_csv("tmp/data_test_web.csv")[:2]
+data_test_web = pd.read_csv("tmp/data_test_web.csv")
 
 
 def get_all_key_moments(text_id):
